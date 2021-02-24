@@ -18,6 +18,7 @@ const dest = 'public';
 const scss = 'scss';
 const html = 'html';
 const watch = 'watch';
+const serve = 'serve';
 
 const isProduction = false;
 
@@ -30,16 +31,33 @@ gulp.task(scss, function () {
     .pipe(concat('bundle.css'))
     .pipe(gulpIf(isProduction, cleanCss()))
     .pipe(gulpIf(!isProduction, sourcemaps.write()))
-    .pipe(gulp.dest(`${dest}/css`));
+    .pipe(gulp.dest(`${dest}/css`))
+    .pipe(browserSync.stream());
 });
 
 gulp.task(html, function () {
-  return gulp.src(htmlPath).pipe(gulp.dest(dest));
+  return gulp
+    .src(htmlPath)
+    .pipe(gulp.dest(dest))
+    .pipe(browserSync.stream());
 });
 
 gulp.task(watch, function () {
   gulp.watch(scssPath, gulp.parallel([scss]));
   gulp.watch(htmlPath, gulp.parallel([html]));
+  gulp.watch(`${dest}/*.html`).on('change', browserSync.reload);
 });
 
-gulp.task('default', gulp.series([scss, html, watch]));
+gulp.task(serve, function () {
+  browserSync.init({
+    server: {
+      baseDir: dest
+    }
+  });
+
+  // gulp.watch(scssPath, gulp.parallel([scss]));
+  // gulp.watch(htmlPath, gulp.parallel([html]));
+  // gulp.watch(`${dest}/*.html`).on('change', browserSync.reload);
+});
+
+gulp.task('default', gulp.series([scss, html, watch, serve]));
