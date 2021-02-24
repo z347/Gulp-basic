@@ -5,6 +5,7 @@ const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCss = require('gulp-clean-css');
+const imagemin = require('gulp-imagemin');
 const gulpIf = require('gulp-if');
 const debug = require('gulp-debug');
 const browserSync = require('browser-sync').create();
@@ -12,11 +13,13 @@ const browserSync = require('browser-sync').create();
 // Path
 const scssPath = 'src/scss/**/*.scss';
 const htmlPath = 'src/html/**/*.html';
+const imgPath = 'src/images/*.+(png|jpg)';
 const dest = 'public';
 
 // Tasks
 const scss = 'scss';
 const html = 'html';
+const image = 'image';
 const serve = 'serve';
 
 const isProduction = false;
@@ -32,6 +35,13 @@ gulp.task(scss, function () {
     .pipe(gulpIf(!isProduction, sourcemaps.write()))
     .pipe(gulp.dest(`${dest}/css`))
     .pipe(browserSync.stream());
+});
+
+gulp.task(image, function(){
+  return gulp
+    .src(imgPath)
+    .pipe(imagemin())
+    .pipe(gulp.dest(`${dest}/images`))
 });
 
 gulp.task(html, function () {
@@ -50,7 +60,8 @@ gulp.task(serve, function () {
 
   gulp.watch(scssPath, gulp.parallel([scss]));
   gulp.watch(htmlPath, gulp.parallel([html]));
+  gulp.watch(imgPath, gulp.parallel([image]));
   gulp.watch(`${dest}/*.html`).on('change', browserSync.reload);
 });
 
-gulp.task('default', gulp.series([scss, html, serve]));
+gulp.task('default', gulp.series([scss, image, html, serve]));

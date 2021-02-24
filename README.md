@@ -43,3 +43,6 @@
     6.    gulp-if === conditional action 
     7.    gulp-debug === file streams to see what files are run through your Gulp pipeline
     8.    browser-sync === browser live reload
+    
+    for images:
+    9.    gulp-imagemin === optimisation images
