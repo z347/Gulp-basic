@@ -17,7 +17,6 @@ const dest = 'public';
 // Tasks
 const scss = 'scss';
 const html = 'html';
-const watch = 'watch';
 const serve = 'serve';
 
 const isProduction = false;
@@ -42,12 +41,6 @@ gulp.task(html, function () {
     .pipe(browserSync.stream());
 });
 
-gulp.task(watch, function () {
-  gulp.watch(scssPath, gulp.parallel([scss]));
-  gulp.watch(htmlPath, gulp.parallel([html]));
-  gulp.watch(`${dest}/*.html`).on('change', browserSync.reload);
-});
-
 gulp.task(serve, function () {
   browserSync.init({
     server: {
@@ -55,9 +48,9 @@ gulp.task(serve, function () {
     }
   });
 
-  // gulp.watch(scssPath, gulp.parallel([scss]));
-  // gulp.watch(htmlPath, gulp.parallel([html]));
-  // gulp.watch(`${dest}/*.html`).on('change', browserSync.reload);
+  gulp.watch(scssPath, gulp.parallel([scss]));
+  gulp.watch(htmlPath, gulp.parallel([html]));
+  gulp.watch(`${dest}/*.html`).on('change', browserSync.reload);
 });
 
-gulp.task('default', gulp.series([scss, html, watch, serve]));
+gulp.task('default', gulp.series([scss, html, serve]));
