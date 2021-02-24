@@ -1,0 +1,22 @@
+{
+  "name": "gulp-example",
+  "engines": {
+    "node": "14.5.5",
+    "npm": "6.14.11"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "gulp:tasks": "gulp --tasks"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.14",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-if": "^3.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^3.0.0"
+  }
+}
